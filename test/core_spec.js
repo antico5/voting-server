@@ -94,38 +94,26 @@ describe('application logic', () => {
   describe('vote', () => {
     it('creates an entry in tally if it doesnt exist', () => {
       const state = fromJS({
-        vote: {
-          pair: ['A','B']
-        },
-        entries: []
+        pair: ['A','B']
       })
       const nextState = vote(state, 'A')
 
       expect(nextState).to.equal(fromJS({
-        vote: {
-          pair: ['A','B'],
-          tally: { 'A': 1 }
-        },
-        entries: []
+        pair: ['A','B'],
+        tally: { 'A': 1 }
       }))
     })
 
     it('adds to existing entry in tally', () => {
       const state = fromJS({
-        vote: {
-          pair: ['A','B'],
-          tally: { 'A': 1 }
-        },
-        entries: []
+        pair: ['A','B'],
+        tally: { 'A': 1 }
       })
       const nextState = vote(state, 'A')
 
       expect(nextState).to.equal(fromJS({
-        vote: {
-          pair: ['A','B'],
-          tally: {'A': 2 }
-        },
-        entries: []
+        pair: ['A','B'],
+        tally: {'A': 2 }
       }))
     })
   })
