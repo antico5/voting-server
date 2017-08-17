@@ -33,7 +33,8 @@ describe('application logic', () => {
 
       expect(nextState).to.equal(fromJS({
         vote: {
-          pair: ['A','B']
+          pair: ['A','B'],
+          round: 1
         },
         entries: ['C']
       }))
@@ -51,7 +52,8 @@ describe('application logic', () => {
 
       expect(nextState).to.equal(fromJS({
         vote: {
-          pair: ['C','D']
+          pair: ['C','D'],
+          round: 1
         },
         entries: ['B']
       }))
@@ -69,7 +71,8 @@ describe('application logic', () => {
 
       expect(nextState).to.equal(fromJS({
         vote: {
-          pair: ['C','D']
+          pair: ['C','D'],
+          round: 1
         },
         entries: ['A', 'B']
       }))

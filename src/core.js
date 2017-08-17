@@ -8,12 +8,14 @@ export function setEntries(state, entries) {
 
 export function next(state) {
   const entries = state.get('entries').concat(getWinners(state.get('vote')))
+  const round = state.getIn(['vote', 'round']) || 0
   if (entries.size == 1) {
     return state.remove('entries').remove('vote').set('winner', entries.first())
   }
   return state.merge({
     vote: Map({
-      pair: entries.take(2)
+      pair: entries.take(2),
+      round: round + 1
     }),
     entries: entries.skip(2)
   })
