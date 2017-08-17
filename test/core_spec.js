@@ -116,5 +116,14 @@ describe('application logic', () => {
         tally: {'A': 2 }
       }))
     })
+
+    it('doesnt update the tally if the entry is not in the pair', () => {
+      const state = fromJS({
+        pair: ['A','B']
+      })
+      const nextState = vote(state, 'C')
+
+      expect(nextState).to.equal(state)
+    })
   })
 })

@@ -20,7 +20,11 @@ export function next(state) {
 }
 
 export function vote(state, movie) {
-  return state.updateIn(['tally', movie], (votes = 0) => votes + 1 )
+  const pair = state.get('pair')
+  if(pair && pair.includes(movie))
+    return state.updateIn(['tally', movie], (votes = 0) => votes + 1 )
+  else
+    return state
 }
 
 function getWinners(vote) {
