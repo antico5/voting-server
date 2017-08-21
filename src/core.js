@@ -21,13 +21,10 @@ export function next(state) {
   })
 }
 
-export function vote(state, movie) {
-  const pair = state.get('pair')
-  if(pair && pair.includes(movie))
-    return state.updateIn(['tally', movie], (votes = 0) => votes + 1 )
-  else
-    return state
+export function vote(voteState, entry, clientId) {
+  return addVote(removePreviousVote(voteState,clientId), entry, clientId)
 }
+
 
 function getWinners(vote) {
   if(!vote) return []
@@ -37,4 +34,22 @@ function getWinners(vote) {
   if (aVotes > bVotes) return [a]
   if (bVotes > aVotes) return [b]
   else return [a, b]
+}
+
+function addVote(voteState, entry, clientId){
+  const pair = voteState.get('pair')
+  if(pair && pair.includes(entry))
+    return voteState.updateIn(['tally', entry], (votes = 0) => votes + 1 )
+                    .setIn(['userVotes',clientId], entry)
+  else
+    return voteState
+}
+
+function removePreviousVote(voteState, clientId){
+  const previousEntry = voteState.getIn(['userVotes',clientId])
+  if(previousEntry){
+    return voteState.updateIn(['tally', previousEntry], t => t - 1)
+                .removeIn(['userVotes', clientId])
+  }
+  return voteState
 }

@@ -99,11 +99,14 @@ describe('application logic', () => {
       const state = fromJS({
         pair: ['A','B']
       })
-      const nextState = vote(state, 'A')
+      const nextState = vote(state, 'A', 'Joe')
 
       expect(nextState).to.equal(fromJS({
         pair: ['A','B'],
-        tally: { 'A': 1 }
+        tally: { 'A': 1 },
+        userVotes: {
+          'Joe': 'A'
+        }
       }))
     })
 
@@ -112,11 +115,14 @@ describe('application logic', () => {
         pair: ['A','B'],
         tally: { 'A': 1 }
       })
-      const nextState = vote(state, 'A')
+      const nextState = vote(state, 'A', 'Joe')
 
       expect(nextState).to.equal(fromJS({
         pair: ['A','B'],
-        tally: {'A': 2 }
+        tally: {'A': 2 },
+        userVotes: {
+          'Joe': 'A'
+        }
       }))
     })
 
@@ -124,9 +130,30 @@ describe('application logic', () => {
       const state = fromJS({
         pair: ['A','B']
       })
-      const nextState = vote(state, 'C')
+      const nextState = vote(state, 'C', 'Joe')
 
       expect(nextState).to.equal(state)
+    })
+
+    it('removes previous vote if the user already voted this round', () => {
+      const state = fromJS({
+        pair: ['A','B'],
+        tally: { 'A': 1 },
+        userVotes: {
+          'Joe': 'A'
+        }
+      })
+      const nextState = vote(state, 'B', 'Joe')
+
+      const expectedState = fromJS({
+        pair: ['A','B'],
+        tally: { 'A': 0, 'B': 1 },
+        userVotes: {
+          'Joe': 'B'
+        }
+      })
+
+      expect(nextState).to.equal(expectedState)
     })
   })
 })
